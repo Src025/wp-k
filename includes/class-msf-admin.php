@@ -43,7 +43,7 @@ class MSF_Admin {
     public function enqueue_admin_scripts($hook) {
         if (strpos($hook, 'multi-step-forms') !== false) {
             wp_enqueue_style('msf-admin-style', MSF_PLUGIN_URL . 'assets/css/msf-admin.css', array(), MSF_VERSION);
-            wp_enqueue_script('msf-admin-script', MSF_PLUGIN_URL . 'assets/js/msf-admin.js', array('jquery'), MSF_VERSION, true);
+            wp_enqueue_script('msf-admin-script', MSF_PLUGIN_URL . 'assets/js/msf-admin.js', array('jquery', 'jquery-ui-sortable'), MSF_VERSION, true);
         }
     }
 
@@ -98,15 +98,20 @@ class MSF_Admin {
         <div class="wrap">
             <h1><?php echo ucfirst($type); ?> Account Form</h1>
 
-            <form method="post" action="">
+            <form method="post" action="" id="msf-admin-form">
                 <?php wp_nonce_field('msf_save_form'); ?>
                 <div id="msf-form-builder">
-                    <textarea name="form_data" id="form_data" style="width: 100%; height: 400px;"><?php echo esc_textarea(json_encode($form_data, JSON_PRETTY_PRINT)); ?></textarea>
-                    <p><em>Edit the JSON data above to customize your form. For now, this is a simple textarea. In a full implementation, you'd have a drag-and-drop form builder.</em></p>
+                    <button type="button" id="msf-add-step" class="button">Add Step</button>
+                    <ul id="msf-steps" class="msf-steps-list"></ul>
+                    <textarea name="form_data" id="form_data" style="width: 100%; height: 200px; display: none;"><?php echo esc_textarea(json_encode($form_data, JSON_PRETTY_PRINT)); ?></textarea>
+                    <p><em>The JSON will be generated automatically from the builder above.</em></p>
                 </div>
 
                 <p><input type="submit" name="save_form" class="button button-primary" value="Save Form"></p>
             </form>
+            <script>
+                var msfInitialData = <?php echo wp_json_encode($form_data); ?>;
+            </script>
         </div>
         <?php
     }

@@ -21,3 +21,70 @@
 .msf-card .button {
     margin-top: 10px;
 }
+
+/* builder styles */
+#msf-form-builder {
+    margin-top: 20px;
+}
+
+#msf-add-step {
+    margin-bottom: 10px;
+}
+
+.msf-steps-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.msf-step-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.msf-step-item .msf-step-title {
+    font-weight: 600;
+    width: 70%;
+    margin-right: 8px;
+}
+
+.msf-step-item .msf-add-field {
+    margin-top: 6px;
+}
+
+.msf-field-item {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 6px;
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.msf-field-item input,
+.msf-field-item select,
+.msf-field-item textarea {
+    font-size: 12px;
+}
+
+.msf-field-options-input {
+    width: 100%;
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.msf-step-placeholder {
+    height: 50px;
+    background: #e2e2e2;
+    border: 1px dashed #aaa;
+}
+
+.msf-field-placeholder {
+    height: 30px;
+    background: #e2e2e2;
+    border: 1px dashed #aaa;
+}
