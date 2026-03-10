@@ -30,31 +30,6 @@ class MSF_Frontend {
         $total_steps = count($steps);
 
         ?>
-        <!-- topbar / hero copied from template -->
-        <div class="topbar">
-            <div class="msf-container nav">
-                <div class="logo">
-                    <div class="logo-box">P</div>
-                    PROMINENCE BANK
-                </div>
-                <div>🔒 Secure Application Portal</div>
-            </div>
-        </div>
-
-        <div class="hero">
-            <div class="msf-container hero-row">
-                <div>
-                    <h1>Open Your <span>Account Today</span></h1>
-                    <p>Complete the onboarding process securely.</p>
-                </div>
-                <div class="stats">
-                    <div><strong>7</strong>STEPS</div>
-                    <div><strong>48h</strong>REVIEW</div>
-                    <div><strong>100%</strong>SECURE</div>
-                </div>
-            </div>
-        </div>
-
         <div class="msf-form-container" data-type="<?php echo $type; ?>">
             <div class="msf-form-toggle">
                 <a href="?msf_type=personal" class="msf-toggle-btn <?php echo $type === 'personal' ? 'active' : ''; ?>">Personal Account</a>
@@ -118,18 +93,38 @@ class MSF_Frontend {
 
         switch ($type) {
             case 'text':
+            case 'email':
+            case 'number':
             case 'date':
-                echo '<input type="' . $type . '" name="' . esc_attr($name) . '" required>';
+                echo '<input type="' . $type . '" name="' . esc_attr($name) . '" placeholder="' . esc_attr(isset($field['label']) ? $field['label'] : '') . '" required>';
+                break;
+            case 'file':
+            case 'file_upload':
+                echo '<div class="msf-file-upload">';
+                echo '<input type="file" name="' . esc_attr($name) . '" id="' . esc_attr($name) . '" required>';
+                echo '<label for="' . esc_attr($name) . '" class="msf-file-label">';
+                if (!empty($field['icon'])) {
+                    echo '<i class="fa-solid fa-' . esc_attr($field['icon']) . '"></i>';
+                }
+                echo '<div class="msf-file-text">Click to upload or drag & drop<br><small>' . esc_html(isset($field['label']) ? $field['label'] : '') . '</small></div>';
+                echo '</label>';
+                echo '</div>';
                 break;
             case 'textarea':
-                echo '<textarea name="' . esc_attr($name) . '" required></textarea>';
+                echo '<textarea name="' . esc_attr($name) . '" placeholder="' . esc_attr(isset($field['label']) ? $field['label'] : '') . '" required></textarea>';
                 break;
             case 'select':
                 echo '<select name="' . esc_attr($name) . '" required>';
                 echo '<option value="">Select...</option>';
                 if (!empty($field['options']) && is_array($field['options'])) {
                     foreach ($field['options'] as $option) {
-                        echo '<option value="' . esc_attr($option) . '">' . esc_html($option) . '</option>';
+                        if (is_array($option)) {
+                            $val = isset($option['value']) ? $option['value'] : '';
+                            $lbl = isset($option['label']) ? $option['label'] : $val;
+                        } else {
+                            $val = $lbl = $option;
+                        }
+                        echo '<option value="' . esc_attr($val) . '">' . esc_html($lbl) . '</option>';
                     }
                 }
                 echo '</select>';

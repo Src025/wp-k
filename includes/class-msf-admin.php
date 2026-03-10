@@ -3,6 +3,8 @@
  * Admin class for Multi-Step Forms Manager
  */
 
+require_once MSF_PLUGIN_DIR . 'default-form-templates.php';
+
 class MSF_Admin {
 
     public function __construct() {
@@ -128,85 +130,6 @@ class MSF_Admin {
     }
 
     private function get_default_form_data($type) {
-        if ($type === 'personal') {
-            return array(
-                'steps' => array(
-                    array(
-                        'title' => 'Account Type',
-                        'fields' => array(
-                            array(
-                                'type' => 'radio',
-                                'name' => 'account_type',
-                                'label' => 'Select Account Type',
-                                'options' => array(
-                                    array(
-                                        'value' => 'savings',
-                                        'label' => 'Savings Account',
-                                        'description' => 'Regular personal savings account.',
-                                        'icon' => 'building-columns',
-                                        'badge' => 'SWIFT Compatible'
-                                    ),
-                                    array(
-                                        'value' => 'custody',
-                                        'label' => 'Custody Account',
-                                        'description' => 'Asset custody & safekeeping account.',
-                                        'icon' => 'shield-halved',
-                                        'badge' => 'ETF Compatible'
-                                    ),
-                                    array(
-                                        'value' => 'numbered',
-                                        'label' => 'Numbered Account',
-                                        'description' => 'Anonymous, coded account (£50,000 fee).',
-                                        'icon' => 'lock',
-                                        'badge' => ''
-                                    ),
-                                    array(
-                                        'value' => 'crypto',
-                                        'label' => 'Cryptocurrency Account',
-                                        'description' => 'Digital asset banking account.',
-                                        'icon' => 'bitcoin',
-                                        'badge' => 'ETF Compatible'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                    array(
-                        'title' => 'Personal Details',
-                        'fields' => array(
-                            array('type' => 'text', 'name' => 'first_name', 'label' => 'First Name'),
-                            array('type' => 'text', 'name' => 'last_name', 'label' => 'Last Name'),
-                            array('type' => 'date', 'name' => 'dob', 'label' => 'Date of Birth'),
-                            array('type' => 'text', 'name' => 'nationality', 'label' => 'Nationality'),
-                            array('type' => 'text', 'name' => 'passport', 'label' => 'Passport/ID'),
-                            array('type' => 'text', 'name' => 'occupation', 'label' => 'Occupation')
-                        )
-                    ),
-                    // Add more steps as needed
-                )
-            );
-        } else {
-            return array(
-                'steps' => array(
-                    array(
-                        'title' => 'Business Type',
-                        'fields' => array(
-                            array('type' => 'radio', 'name' => 'business_type', 'label' => 'Select Business Type', 'options' => array('Sole Proprietorship', 'Partnership', 'Corporation', 'LLC'))
-                        )
-                    ),
-                    array(
-                        'title' => 'Business Details',
-                        'fields' => array(
-                            array('type' => 'text', 'name' => 'business_name', 'label' => 'Business Name'),
-                            array('type' => 'text', 'name' => 'registration_number', 'label' => 'Registration Number'),
-                            array('type' => 'date', 'name' => 'incorporation_date', 'label' => 'Incorporation Date'),
-                            array('type' => 'text', 'name' => 'industry', 'label' => 'Industry'),
-                            array('type' => 'textarea', 'name' => 'business_description', 'label' => 'Business Description')
-                        )
-                    ),
-                    // Add more steps as needed
-                )
-            );
-        }
+        return ($type === 'personal') ? get_default_personal_form() : get_default_business_form();
     }
 }

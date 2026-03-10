@@ -88,6 +88,23 @@
 
 .msf-step h2 {
     margin-top: 0;
+    font-size: 24px;
+    color: #0f2a4d;
+}
+
+.msf-step > p {
+    color: #666;
+    font-size: 14px;
+}
+
+.msf-section-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f2a4d;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .msf-fields {
@@ -97,29 +114,89 @@
     margin-top: 20px;
 }
 
+.msf-fields.grid-1 {
+    grid-template-columns: 1fr;
+}
+
+.msf-fields.grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
 .msf-field {
     display: flex;
     flex-direction: column;
 }
 
 .msf-field label {
-    font-size: 14px;
-    margin-bottom: 5px;
+    font-size: 13px;
+    margin-bottom: 6px;
     font-weight: 600;
+    color: #1b2a3a;
+}
+
+.msf-field label .required {
+    color: #d00;
 }
 
 .msf-field input,
 .msf-field select,
 .msf-field textarea {
-    padding: 10px;
+    padding: 10px 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
+    font-family: inherit;
+}
+
+.msf-field input:focus,
+.msf-field select:focus,
+.msf-field textarea:focus {
+    outline: none;
+    border-color: #0f2a4d;
+    box-shadow: 0 0 0 3px rgba(15, 42, 77, 0.1);
 }
 
 .msf-field textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px;
+}
+
+/* File upload styling */
+.msf-file-upload {
+    position: relative;
+    margin-top: 10px;
+}
+
+.msf-file-upload input[type="file"] {
+    display: none;
+}
+
+.msf-file-upload .msf-file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 40px 20px;
+    border: 2px dashed #d0d7e5;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #f9fafb;
+}
+
+.msf-file-upload .msf-file-label:hover {
+    border-color: #0f2a4d;
+    background: #f3f5fa;
+}
+
+.msf-file-upload .msf-file-label i {
+    font-size: 32px;
+    color: #0f2a4d;
+}
+
+.msf-file-text small {
+    color: #888;
 }
 
 .msf-actions {
