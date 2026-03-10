@@ -57,7 +57,13 @@ class MSF_Admin {
                 }
             }
             if ($type) {
-                $data = get_option("msf_{$type}_form_data", array());
+                // fetch whatever is stored; if the option isn't set or doesn't
+                // contain the expected structure we'll fall back to default
+                $data = get_option("msf_{$type}_form_data");
+                if (!is_array($data) || !isset($data['steps']) || !is_array($data['steps'])) {
+                    $data = $this->get_default_form_data($type);
+                }
+
                 wp_localize_script('msf-admin-script', 'msfAdminData', array('initial' => $data));
             }
         }

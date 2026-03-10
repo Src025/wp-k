@@ -3,8 +3,25 @@
  */
 
 jQuery(document).ready(function($) {
+    // if we're not on a page that has the builder markup there's nothing to do
+    if ($('#msf-steps').length === 0) {
+        return; // avoid running the rest of the script on the dashboard landing page
+    }
+
     // basic builder for steps and fields
-    var formData = (typeof msfAdminData !== 'undefined' && msfAdminData.initial) ? msfAdminData.initial : { steps: [] };
+    // msfAdminData.initial should always be an object with a steps array but we
+    // guard in case the option was saved as an empty array or the script was
+    // loaded on a page where the data isn't defined.  Failing to sanitize could
+    // result in a JS error and make the "Add Step" button appear non‑responsive.
+    var formData;
+    if (typeof msfAdminData !== 'undefined' &&
+        msfAdminData.initial &&
+        typeof msfAdminData.initial === 'object' &&
+        Array.isArray(msfAdminData.initial.steps)) {
+        formData = msfAdminData.initial;
+    } else {
+        formData = { steps: [] };
+    }
 
     function renderBuilder() {
         var $steps = $('#msf-steps').empty();
