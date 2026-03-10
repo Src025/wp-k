@@ -43,11 +43,20 @@
     padding: 10px;
     margin-bottom: 8px;
     position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.msf-step-item .msf-drag-handle {
+    cursor: move;
+    margin-right: 6px;
+    font-size: 16px;
+    color: #888;
 }
 
 .msf-step-item .msf-step-title {
     font-weight: 600;
-    width: 70%;
+    flex: 1;
     margin-right: 8px;
 }
 
@@ -63,6 +72,45 @@
     display: flex;
     align-items: center;
     gap: 6px;
+}
+
+.msf-field-item .msf-drag-handle {
+    cursor: move;
+    font-size: 14px;
+    color: #888;
+}
+
+.msf-field-item .msf-field-validation,
+.msf-field-item .msf-field-condition {
+    font-size: 12px;
+    padding: 2px 4px;
+}
+
+.msf-field-options-wrapper {
+    width: 100%;
+    margin-top: 4px;
+}
+
+.msf-option-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 4px;
+    align-items: center;
+}
+
+.msf-option-row input,
+.msf-option-row select {
+    font-size: 12px;
+}
+
+.msf-option-row .msf-remove-option {
+    cursor: pointer;
+    color: #d00;
+    font-weight: bold;
+}
+
+.msf-add-option {
+    margin-top: 4px;
 }
 
 .msf-field-item input,
