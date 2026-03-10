@@ -52,13 +52,33 @@ class MSF_Frontend {
                 <input type="hidden" name="msf_form_type" value="<?php echo $type; ?>">
                 <?php foreach ($steps as $step_index => $step): ?>
                     <div class="msf-step <?php echo $step_index === 0 ? 'active' : ''; ?>" data-step="<?php echo $step_index; ?>">
-                        <h2><?php echo $step['title']; ?></h2>
+                        <h2><?php echo esc_html($step['title']); ?></h2>
+                        <?php if (!empty($step['description'])): ?>
+                            <p><?php echo esc_html($step['description']); ?></p>
+                        <?php endif; ?>
 
-                        <?php if (isset($step['fields'])): ?>
+                        <?php if (!empty($step['sections'])): ?>
+                            <?php foreach ($step['sections'] as $section): ?>
+                                <?php if (!empty($section['title'])): ?>
+                                    <div class="msf-section-title"><?php echo esc_html($section['title']); ?></div>
+                                    <?php if (!empty($section['description'])): ?>
+                                        <div class="msf-section-desc"><?php echo esc_html($section['description']); ?></div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <div class="msf-fields">
+                                    <?php foreach ($section['fields'] as $field): ?>
+                                        <div class="msf-field">
+                                            <label><?php echo esc_html($field['label']); ?><?php if (!empty($field['required'])): ?> <span class="required">*</span><?php endif; ?></label>
+                                            <?php self::render_field($field); ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php elseif (isset($step['fields'])): ?>
                             <div class="msf-fields">
                                 <?php foreach ($step['fields'] as $field): ?>
                                     <div class="msf-field">
-                                        <label><?php echo $field['label']; ?></label>
+                                        <label><?php echo esc_html($field['label']); ?><?php if (!empty($field['required'])): ?> <span class="required">*</span><?php endif; ?></label>
                                         <?php self::render_field($field); ?>
                                     </div>
                                 <?php endforeach; ?>

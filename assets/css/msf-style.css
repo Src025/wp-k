@@ -102,9 +102,15 @@
     font-weight: 700;
     color: #0f2a4d;
     margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+.msf-section-desc {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 15px;
 }
 
 .msf-fields {
