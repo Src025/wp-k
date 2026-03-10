@@ -1,0 +1,303 @@
+/* Multi-Step Forms Manager Styles */
+
+.msf-form-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: 'Moderna Serif', serif;
+    background: #f3f5fa;
+    color: #1b2a3a;
+}
+
+.msf-form-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.msf-toggle-btn {
+    padding: 10px 20px;
+    border: 1px solid #e5e8ef;
+    background: white;
+    cursor: pointer;
+    border-radius: 5px 0 0 5px;
+}
+
+.msf-toggle-btn.active {
+    background: #0f2a4d;
+    color: white;
+}
+
+.msf-toggle-btn:last-child {
+    border-radius: 0 5px 5px 0;
+    border-left: none;
+}
+
+.msf-steps {
+    background: white;
+    border-bottom: 1px solid #e5e8ef;
+}
+
+.msf-steps ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    padding: 20px;
+    margin: 0;
+    justify-content: center;
+}
+
+.msf-steps li {
+    font-size: 14px;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.msf-steps li.active {
+    opacity: 1;
+    font-weight: 600;
+}
+
+.msf-steps li i {
+    color: #1c3f74;
+    font-size: 16px;
+}
+
+.msf-progress {
+    height: 6px;
+    background: #e6ebf2;
+    border-radius: 4px;
+    margin: 0 20px;
+}
+
+.msf-progress-bar {
+    height: 6px;
+    background: #1c3f74;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+.msf-form {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    padding: 40px;
+    margin: 20px;
+}
+
+.msf-step {
+    display: none;
+}
+
+.msf-step.active {
+    display: block;
+}
+
+.msf-step h2 {
+    margin-top: 0;
+}
+
+.msf-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.msf-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.msf-field label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.msf-field input,
+.msf-field select,
+.msf-field textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.msf-field textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.msf-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.msf-btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.msf-btn-back {
+    background: #e9edf4;
+}
+
+.msf-btn-next,
+.msf-btn-submit {
+    background: #173b70;
+    color: white;
+}
+
+.msf-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ACCOUNT TYPE CARDS */
+
+.msf-account-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.msf-account-card {
+    position: relative;
+    background: white;
+    border: 2px solid #e5e8ef;
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    display: block;
+}
+
+.msf-account-card:hover {
+    border-color: #1c3f74;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.msf-account-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.msf-account-card input[type="radio"]:checked + .msf-card-content {
+    border-color: #1c3f74;
+    background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+}
+
+.msf-account-card input[type="radio"]:checked + .msf-card-content::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 20px;
+    height: 20px;
+    background: #1c3f74;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.msf-account-card input[type="radio"]:checked + .msf-card-content::after {
+    content: '✓';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 20px;
+    height: 20px;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.msf-card-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+}
+
+.msf-card-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.msf-card-text h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1b2a3a;
+}
+
+.msf-card-text p {
+    margin: 0 0 12px 0;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.msf-account-card.selected {
+    border-color: #1c3f74;
+    background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.msf-account-card.selected .msf-card-content {
+    border-color: #1c3f74;
+}
+
+@media (max-width: 768px) {
+    .msf-fields {
+        grid-template-columns: 1fr;
+    }
+
+    .msf-steps ul {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .msf-form {
+        margin: 10px;
+        padding: 20px;
+    }
+
+    .msf-account-cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .msf-account-card {
+        padding: 20px;
+    }
+
+    .msf-card-content {
+        gap: 12px;
+    }
+
+    .msf-card-icon {
+        font-size: 28px;
+    }
+
+    .msf-card-text h3 {
+        font-size: 16px;
+    }
+}

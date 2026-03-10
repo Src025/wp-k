@@ -1,0 +1,62 @@
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Moderna Serif';
+    src: url('../fonts/ModernaSerif-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
