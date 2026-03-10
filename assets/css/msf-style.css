@@ -255,6 +255,20 @@
     line-height: 1.4;
 }
 
+.msf-card-tagline {
+    font-size: 12px !important;
+    color: #9ca3af !important;
+    margin: 0 0 8px 0 !important;
+    font-style: italic;
+}
+
+.msf-card-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1c3f74;
+    margin-top: 8px;
+}
+
 .msf-account-card.selected {
     border-color: #1c3f74;
     background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);

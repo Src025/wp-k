@@ -175,55 +175,44 @@ class MSF_Frontend {
     }
 
     private static function render_account_type_cards($options) {
-        $account_types = array(
-            'Savings' => array(
-                'icon' => 'fa-building-columns',
-                'description' => 'Regular savings account',
-                'badge' => 'SWIFT Compatible',
-                'color' => '#1c3f74'
-            ),
-            'Custody' => array(
-                'icon' => 'fa-shield-halved',
-                'description' => 'Asset custody account',
-                'badge' => 'ETF Compatible',
-                'color' => '#2e5c8a'
-            ),
-            'Numbered' => array(
-                'icon' => 'fa-lock',
-                'description' => 'Private coded account',
-                'badge' => '',
-                'color' => '#3a6ba5'
-            ),
-            'Crypto' => array(
-                'icon' => 'fa-bitcoin',
-                'description' => 'Digital asset account',
-                'badge' => 'ETF Compatible',
-                'color' => '#4a7ac0'
-            )
-        );
-
         echo '<div class="msf-account-cards">';
-        foreach ($options as $option) {
-            $type_data = isset($account_types[$option]) ? $account_types[$option] : array(
-                'icon' => 'fa-circle',
-                'description' => '',
-                'badge' => '',
-                'color' => '#1c3f74'
+        foreach ($options as $option_key => $option_data) {
+            // Handle both old format (string) and new format (array)
+            if (is_array($option_data)) {
+                $option_name = $option_key;
+                $icon = $option_data['icon'] ?? 'fa-circle';
+                $tagline = $option_data['tagline'] ?? '';
+                $amount = $option_data['amount'] ?? '';
+            } else {
+                // Fallback for old format
+                $option_name = $option_data;
+                $icon = 'fa-circle';
+                $tagline = '';
+                $amount = '';
+            }
+
+            // Get color based on account type
+            $colors = array(
+                'Savings Account' => '#1c3f74',
+                'Custody Account' => '#2e5c8a',
+                'Numbered Account' => '#3a6ba5',
+                'Cryptocurrency Account' => '#4a7ac0'
             );
+            $color = $colors[$option_name] ?? '#1c3f74';
 
             echo '<label class="msf-account-card">';
-            echo '<input type="radio" name="account_type" value="' . $option . '" required>';
+            echo '<input type="radio" name="account_type" value="' . $option_name . '" required>';
             echo '<div class="msf-card-content">';
-            echo '<div class="msf-card-icon" style="color: ' . $type_data['color'] . '">';
-            echo '<i class="fas ' . $type_data['icon'] . '"></i>';
+            echo '<div class="msf-card-icon" style="color: ' . $color . '">';
+            echo '<i class="fas ' . $icon . '"></i>';
             echo '</div>';
             echo '<div class="msf-card-text">';
-            echo '<h3>' . $option . ' Account</h3>';
-            if ($type_data['description']) {
-                echo '<p>' . $type_data['description'] . '</p>';
+            echo '<h3>' . $option_name . '</h3>';
+            if ($tagline) {
+                echo '<p class="msf-card-tagline">' . $tagline . '</p>';
             }
-            if ($type_data['badge']) {
-                echo '<span class="msf-card-badge">' . $type_data['badge'] . '</span>';
+            if ($amount) {
+                echo '<div class="msf-card-amount">' . $amount . '</div>';
             }
             echo '</div>';
             echo '</div>';
@@ -280,5 +269,38 @@ class MSF_Frontend {
             echo '</label>';
         }
         echo '</div>';
+    }
+
+    private static function process_form_submission($type) {
+        // Basic form submission handling - you can extend this as needed
+        $form_data = get_option("msf_{$type}_form_data", array());
+        
+        if (empty($form_data)) {
+            wp_die('Form configuration not found.');
+        }
+
+        // Collect submitted data
+        $submitted_data = array();
+        foreach ($form_data['steps'] as $step) {
+            if (isset($step['fields'])) {
+                foreach ($step['fields'] as $field) {
+                    $field_name = $field['name'];
+                    if (isset($_POST[$field_name])) {
+                        $submitted_data[$field_name] = sanitize_text_field($_POST[$field_name]);
+                    }
+                }
+            }
+        }
+
+        // Here you can add email sending, database storage, etc.
+        // For now, just show a success message
+        echo '<div class="msf-success-message">';
+        echo '<h3>Form submitted successfully!</h3>';
+        echo '<p>Thank you for your ' . ucfirst($type) . ' account application.</p>';
+        echo '<pre>' . print_r($submitted_data, true) . '</pre>'; // Debug output
+        echo '</div>';
+        
+        // Prevent further form display
+        exit;
     }
 }

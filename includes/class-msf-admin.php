@@ -142,10 +142,32 @@ class MSF_Admin {
                                                             <option value="select" <?php selected($field['type'], 'select'); ?>>Select</option>
                                                             <option value="date" <?php selected($field['type'], 'date'); ?>>Date</option>
                                                             <option value="file" <?php selected($field['type'], 'file'); ?>>File Upload</option>
+                                                            <option value="radio" <?php selected($field['type'], 'radio'); ?>>Radio (Account Types)</option>
                                                         </select>
                                                         <input type="text" name="steps[<?php echo $index; ?>][fields][<?php echo $field_index; ?>][label]" value="<?php echo esc_attr($field['label']); ?>" placeholder="Field Label" class="msf-field-label">
                                                         <input type="text" name="steps[<?php echo $index; ?>][fields][<?php echo $field_index; ?>][name]" value="<?php echo esc_attr($field['name']); ?>" placeholder="Field Name" class="msf-field-name">
                                                         <button type="button" class="msf-remove-field-btn">×</button>
+
+                                                        <?php if ($field['type'] === 'radio' && isset($field['options']) && is_array($field['options'])): ?>
+                                                            <div class="msf-radio-options" style="margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                                                                <h5 style="margin: 0 0 10px 0; font-size: 12px; text-transform: uppercase; color: #666;">Account Type Options</h5>
+                                                                <?php foreach ($field['options'] as $option_key => $option_data): ?>
+                                                                    <?php if (is_array($option_data)): ?>
+                                                                        <div class="msf-radio-option-item" style="margin-bottom: 8px; padding: 8px; background: white; border-radius: 4px; border: 1px solid #eee;">
+                                                                            <input type="text" name="steps[<?php echo $index; ?>][fields][<?php echo $field_index; ?>][options][<?php echo $option_key; ?>][name]" value="<?php echo esc_attr($option_key); ?>" placeholder="Account Name" style="width: 100%; margin-bottom: 5px; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
+                                                                            <div style="display: flex; gap: 5px;">
+                                                                                <button type="button" class="msf-option-icon-picker-btn" data-option-key="<?php echo $option_key; ?>" style="padding: 5px 8px; background: #f0f0f0; border: 1px solid #ddd; border-radius: 3px; cursor: pointer;">
+                                                                                    <i class="fas <?php echo esc_attr($option_data['icon'] ?? 'fa-circle'); ?>"></i>
+                                                                                </button>
+                                                                                <input type="hidden" name="steps[<?php echo $index; ?>][fields][<?php echo $field_index; ?>][options][<?php echo $option_key; ?>][icon]" value="<?php echo esc_attr($option_data['icon'] ?? 'fa-circle'); ?>" class="msf-option-icon-input">
+                                                                                <input type="text" name="steps[<?php echo $index; ?>][fields][<?php echo $field_index; ?>][options][<?php echo $option_key; ?>][tagline]" value="<?php echo esc_attr($option_data['tagline'] ?? ''); ?>" placeholder="Tagline" style="flex: 1; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
+                                                                                <input type="text" name="steps[<?php echo $index; ?>][fields][<?php echo $field_index; ?>][options][<?php echo $option_key; ?>][amount]" value="<?php echo esc_attr($option_data['amount'] ?? ''); ?>" placeholder="Amount" style="width: 80px; padding: 5px; border: 1px solid #ddd; border-radius: 3px;">
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php endif; ?>
+                                                                <?php endforeach; ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
@@ -305,9 +327,21 @@ class MSF_Admin {
                                 'name' => sanitize_text_field($field['name'])
                             );
 
-                            // Handle options for select fields
+                            // Handle options for select fields and radio account types
                             if ($field['type'] === 'select' && isset($field['options'])) {
                                 $field_data['options'] = array_map('sanitize_text_field', $field['options']);
+                            } elseif ($field['type'] === 'radio' && isset($field['options'])) {
+                                $options_data = array();
+                                foreach ($field['options'] as $option_key => $option_details) {
+                                    if (is_array($option_details)) {
+                                        $options_data[$option_key] = array(
+                                            'icon' => sanitize_text_field($option_details['icon'] ?? 'fa-circle'),
+                                            'tagline' => sanitize_text_field($option_details['tagline'] ?? ''),
+                                            'amount' => sanitize_text_field($option_details['amount'] ?? '')
+                                        );
+                                    }
+                                }
+                                $field_data['options'] = $options_data;
                             }
 
                             $step_data['fields'][] = $field_data;
@@ -330,7 +364,33 @@ class MSF_Admin {
                         'title' => 'Account Type',
                         'icon' => 'fa-building-columns',
                         'fields' => array(
-                            array('type' => 'radio', 'name' => 'account_type', 'label' => 'Select Account Type', 'options' => array('Savings', 'Custody', 'Numbered', 'Crypto'))
+                            array(
+                                'type' => 'radio',
+                                'name' => 'account_type',
+                                'label' => 'Select Account Type',
+                                'options' => array(
+                                    'Savings Account' => array(
+                                        'icon' => 'fa-piggy-bank',
+                                        'tagline' => 'Onboarding & Compliance Processing Fee',
+                                        'amount' => '€25,000'
+                                    ),
+                                    'Custody Account' => array(
+                                        'icon' => 'fa-shield-halved',
+                                        'tagline' => 'Onboarding & Compliance Processing Fee',
+                                        'amount' => '€25,000'
+                                    ),
+                                    'Numbered Account' => array(
+                                        'icon' => 'fa-hashtag',
+                                        'tagline' => 'Account Opening Fee (Onboarding & Compliance Processing Fee)',
+                                        'amount' => '€50,000'
+                                    ),
+                                    'Cryptocurrency Account' => array(
+                                        'icon' => 'fa-bitcoin',
+                                        'tagline' => 'Onboarding & Compliance Processing Fee',
+                                        'amount' => '€25,000'
+                                    )
+                                )
+                            )
                         )
                     ),
                     array(

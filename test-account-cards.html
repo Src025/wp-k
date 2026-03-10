@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Step Forms Test</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Moderna Serif', serif; margin: 20px; }
+        .msf-account-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+        .msf-account-card { display: block; cursor: pointer; }
+        .msf-account-card input[type="radio"] { display: none; }
+        .msf-card-content { border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; transition: all 0.3s ease; background: white; }
+        .msf-account-card input[type="radio"]:checked + .msf-card-content { border-color: #1c3f74; background: #f8f9fa; }
+        .msf-card-icon { font-size: 48px; margin-bottom: 15px; }
+        .msf-card-text h3 { margin: 0 0 10px 0; font-size: 24px; color: #1c3f74; }
+        .msf-card-tagline { color: #666; font-size: 14px; margin: 5px 0; }
+        .msf-card-amount { font-size: 28px; font-weight: bold; color: #d8b25d; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Account Type Selection Test</h1>
+    <div class="msf-account-cards">
+        <label class="msf-account-card">
+            <input type="radio" name="account_type" value="Savings Account" required>
+            <div class="msf-card-content">
+                <div class="msf-card-icon" style="color: #1c3f74;">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="msf-card-text">
+                    <h3>Savings Account</h3>
+                    <p class="msf-card-tagline">(Onboarding & Compliance Processing Fee)</p>
+                    <div class="msf-card-amount">€25,000</div>
+                </div>
+            </div>
+        </label>
+
+        <label class="msf-account-card">
+            <input type="radio" name="account_type" value="Custody Account" required>
+            <div class="msf-card-content">
+                <div class="msf-card-icon" style="color: #2e5c8a;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="msf-card-text">
+                    <h3>Custody Account</h3>
+                    <p class="msf-card-tagline">(Asset Protection & Management Fee)</p>
+                    <div class="msf-card-amount">€50,000</div>
+                </div>
+            </div>
+        </label>
+
+        <label class="msf-account-card">
+            <input type="radio" name="account_type" value="Numbered Account" required>
+            <div class="msf-card-content">
+                <div class="msf-card-icon" style="color: #3a6ba5;">
+                    <i class="fas fa-hashtag"></i>
+                </div>
+                <div class="msf-card-text">
+                    <h3>Numbered Account</h3>
+                    <p class="msf-card-tagline">(Privacy & Security Setup Fee)</p>
+                    <div class="msf-card-amount">€75,000</div>
+                </div>
+            </div>
+        </label>
+
+        <label class="msf-account-card">
+            <input type="radio" name="account_type" value="Cryptocurrency Account" required>
+            <div class="msf-card-content">
+                <div class="msf-card-icon" style="color: #4a7ac0;">
+                    <i class="fab fa-bitcoin"></i>
+                </div>
+                <div class="msf-card-text">
+                    <h3>Cryptocurrency Account</h3>
+                    <p class="msf-card-tagline">(Digital Asset Management Fee)</p>
+                    <div class="msf-card-amount">€100,000</div>
+                </div>
+            </div>
+        </label>
+    </div>
+</body>
+</html>
