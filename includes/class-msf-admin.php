@@ -44,6 +44,20 @@ class MSF_Admin {
         if (strpos($hook, 'multi-step-forms') !== false) {
             wp_enqueue_style('msf-admin-style', MSF_PLUGIN_URL . 'assets/css/msf-admin.css', array(), MSF_VERSION);
             wp_enqueue_script('msf-admin-script', MSF_PLUGIN_URL . 'assets/js/msf-admin.js', array('jquery', 'jquery-ui-sortable'), MSF_VERSION, true);
+
+            // supply initial form data to the script if we're on one of our subpages
+            $type = '';
+            if (isset($_GET['page'])) {
+                if ($_GET['page'] === 'msf-personal') {
+                    $type = 'personal';
+                } elseif ($_GET['page'] === 'msf-business') {
+                    $type = 'business';
+                }
+            }
+            if ($type) {
+                $data = get_option("msf_{$type}_form_data", array());
+                wp_localize_script('msf-admin-script', 'msfAdminData', array('initial' => $data));
+            }
         }
     }
 
@@ -109,9 +123,6 @@ class MSF_Admin {
 
                 <p><input type="submit" name="save_form" class="button button-primary" value="Save Form"></p>
             </form>
-            <script>
-                var msfInitialData = <?php echo wp_json_encode($form_data); ?>;
-            </script>
         </div>
         <?php
     }

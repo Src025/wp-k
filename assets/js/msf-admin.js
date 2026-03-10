@@ -4,7 +4,7 @@
 
 jQuery(document).ready(function($) {
     // basic builder for steps and fields
-    var formData = msfInitialData || { steps: [] };
+    var formData = (typeof msfAdminData !== 'undefined' && msfAdminData.initial) ? msfAdminData.initial : { steps: [] };
 
     function renderBuilder() {
         var $steps = $('#msf-steps').empty();
