@@ -56,8 +56,10 @@ add_action('plugins_loaded', 'msf_init');
 // Enqueue scripts and styles
 function msf_enqueue_scripts() {
     if (!is_admin()) {
-        wp_enqueue_style('msf-fonts', MSF_PLUGIN_URL . 'assets/css/msf-fonts.css', array(), MSF_VERSION);
-        wp_enqueue_style('msf-style', MSF_PLUGIN_URL . 'assets/css/msf-style.css', array('msf-fonts'), MSF_VERSION);
+        // core styles
+        wp_enqueue_style('msf-style', MSF_PLUGIN_URL . 'assets/css/msf-style.css', array(), MSF_VERSION);
+        // font awesome for icons used in the template
+        wp_enqueue_style('msf-fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css', array(), '6.5.0');
         wp_enqueue_script('msf-script', MSF_PLUGIN_URL . 'assets/js/msf-script.js', array('jquery'), MSF_VERSION, true);
     }
 }

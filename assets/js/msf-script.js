@@ -31,6 +31,24 @@ jQuery(document).ready(function($) {
             submitBtn.toggle(currentStep === totalSteps - 1);
         }
 
+        // when an enhanced radio option is clicked, toggle active state
+        container.on('click', '.msf-option', function() {
+            const radio = $(this).find('input[type=radio]');
+            if (radio.length) {
+                radio.prop('checked', true).trigger('change');
+            }
+        });
+
+        container.on('change', 'input[type=radio]', function() {
+            const name = $(this).attr('name');
+            // deactivate siblings
+            container.find('input[name="' + name + '"]')
+                .closest('.msf-option')
+                .removeClass('active');
+            // activate current
+            $(this).closest('.msf-option').addClass('active');
+        });
+
         nextBtn.on('click', function() {
             if (currentStep < totalSteps - 1) {
                 currentStep++;
@@ -54,21 +72,7 @@ jQuery(document).ready(function($) {
             $(this).addClass('active');
         });
 
-        // Handle account type card selection
-        container.find('.msf-account-card').on('click', function() {
-            const card = $(this);
-            const radio = card.find('input[type="radio"]');
-            const cardContent = card.find('.msf-card-content');
-
-            // Remove selection from other cards
-            container.find('.msf-account-card').removeClass('selected');
-            container.find('.msf-account-card .msf-card-content').css('border-color', '#e5e8ef');
-
-            // Select this card
-            card.addClass('selected');
-            cardContent.css('border-color', '#1c3f74');
-            radio.prop('checked', true);
-        });
-
         // Initialize
         updateUI();
+    });
+});

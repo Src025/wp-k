@@ -26,23 +26,34 @@ class MSF_Frontend {
             self::process_form_submission($type);
         }
 
-        // Get settings
-        $font_family = get_option('msf_font_family', 'Moderna Serif');
-        $font_weight = get_option('msf_font_weight', '400');
-        $primary_color = get_option('msf_primary_color', '#1c3f74');
-        $secondary_color = get_option('msf_secondary_color', '#d8b25d');
-
         $steps = $form_data['steps'];
         $total_steps = count($steps);
 
         ?>
-        <style>
-            .msf-form-container { font-family: '<?php echo $font_family; ?>', serif; font-weight: <?php echo $font_weight; ?>; }
-            .msf-progress-bar { background: <?php echo $primary_color; ?>; }
-            .msf-btn-next, .msf-btn-submit { background: <?php echo $primary_color; ?>; }
-            .msf-steps li i { color: <?php echo $primary_color; ?>; }
-            .msf-toggle-btn.active { background: <?php echo $primary_color; ?>; }
-        </style>
+        <!-- topbar / hero copied from template -->
+        <div class="topbar">
+            <div class="msf-container nav">
+                <div class="logo">
+                    <div class="logo-box">P</div>
+                    PROMINENCE BANK
+                </div>
+                <div>🔒 Secure Application Portal</div>
+            </div>
+        </div>
+
+        <div class="hero">
+            <div class="msf-container hero-row">
+                <div>
+                    <h1>Open Your <span>Account Today</span></h1>
+                    <p>Complete the onboarding process securely.</p>
+                </div>
+                <div class="stats">
+                    <div><strong>7</strong>STEPS</div>
+                    <div><strong>48h</strong>REVIEW</div>
+                    <div><strong>100%</strong>SECURE</div>
+                </div>
+            </div>
+        </div>
 
         <div class="msf-form-container" data-type="<?php echo $type; ?>">
             <div class="msf-form-toggle">
@@ -53,10 +64,7 @@ class MSF_Frontend {
             <div class="msf-steps">
                 <ul>
                     <?php for ($i = 0; $i < $total_steps; $i++): ?>
-                        <li class="<?php echo $i === 0 ? 'active' : ''; ?>">
-                            <i class="fas <?php echo isset($steps[$i]['icon']) ? $steps[$i]['icon'] : self::get_step_icon($steps[$i]['title'], $i); ?>"></i>
-                            <?php echo ($i + 1) . ' ' . $steps[$i]['title']; ?>
-                        </li>
+                        <li class="<?php echo $i === 0 ? 'active' : ''; ?>"><?php echo ($i + 1) . ' ' . $steps[$i]['title']; ?></li>
                     <?php endfor; ?>
                 </ul>
             </div>
@@ -94,213 +102,75 @@ class MSF_Frontend {
         <?php
     }
 
-    private static function get_step_icon($title, $index) {
-        $icons = array(
-            'Account' => 'fa-building-columns',
-            'Personal' => 'fa-user',
-            'Address' => 'fa-map-marker-alt',
-            'Transaction' => 'fa-exchange-alt',
-            'Source' => 'fa-money-bill-wave',
-            'KYC' => 'fa-id-card',
-            'Review' => 'fa-check-circle',
-            'Business' => 'fa-briefcase',
-            'Details' => 'fa-info-circle',
-            'Type' => 'fa-list',
-            'Upload' => 'fa-upload',
-            'Contact' => 'fa-phone',
-            'Funds' => 'fa-dollar-sign'
-        );
+    private static function process_form_submission($type) {
+        // Process the form data
+        // In a real implementation, you'd validate and save to database
+        $form_data = $_POST;
+        unset($form_data['msf_submit'], $form_data['msf_form_type']);
 
-        // Try to match title keywords
-        foreach ($icons as $keyword => $icon) {
-            if (stripos($title, $keyword) !== false) {
-                return $icon;
-            }
-        }
-
-        // Default icons based on step number
-        $default_icons = array(
-            'fa-star',
-            'fa-user',
-            'fa-map',
-            'fa-cog',
-            'fa-file',
-            'fa-camera',
-            'fa-check'
-        );
-
-        return $default_icons[$index % count($default_icons)] ?? 'fa-circle';
+        // For now, just show a success message
+        echo '<div class="msf-success-message">Thank you! Your ' . ucfirst($type) . ' account application has been submitted successfully.</div>';
     }
 
     private static function render_field($field) {
-        $name = $field['name'];
-        $type = $field['type'];
+        $name = isset($field['name']) ? $field['name'] : '';
+        $type = isset($field['type']) ? $field['type'] : 'text';
 
         switch ($type) {
             case 'text':
             case 'date':
-                echo '<input type="' . $type . '" name="' . $name . '" required>';
-                break;
-            case 'file':
-                echo '<input type="file" name="' . $name . '" accept=".jpg,.jpeg,.png,.pdf" required>';
+                echo '<input type="' . $type . '" name="' . esc_attr($name) . '" required>';
                 break;
             case 'textarea':
-                echo '<textarea name="' . $name . '" required></textarea>';
+                echo '<textarea name="' . esc_attr($name) . '" required></textarea>';
                 break;
             case 'select':
-                echo '<select name="' . $name . '" required>';
+                echo '<select name="' . esc_attr($name) . '" required>';
                 echo '<option value="">Select...</option>';
-                if (isset($field['options'])) {
+                if (!empty($field['options']) && is_array($field['options'])) {
                     foreach ($field['options'] as $option) {
-                        echo '<option value="' . $option . '">' . $option . '</option>';
+                        echo '<option value="' . esc_attr($option) . '">' . esc_html($option) . '</option>';
                     }
                 }
                 echo '</select>';
                 break;
             case 'radio':
-                if ($name === 'account_type' && isset($field['options'])) {
-                    self::render_account_type_cards($field['options']);
-                } elseif ($name === 'business_type' && isset($field['options'])) {
-                    self::render_business_type_cards($field['options']);
-                } else {
-                    if (isset($field['options'])) {
-                        foreach ($field['options'] as $option) {
-                            echo '<label><input type="radio" name="' . $name . '" value="' . $option . '" required> ' . $option . '</label><br>';
+                // support enhanced option objects (icon, description, badge)
+                if (!empty($field['options']) && is_array($field['options'])) {
+                    echo '<div class="msf-options">';
+                    foreach ($field['options'] as $option) {
+                        // option may be string or array
+                        if (is_array($option)) {
+                            $value = isset($option['value']) ? $option['value'] : '';
+                            $label = isset($option['label']) ? $option['label'] : $value;
+                            $icon = isset($option['icon']) ? $option['icon'] : '';
+                            $description = isset($option['description']) ? $option['description'] : '';
+                            $badge = isset($option['badge']) ? $option['badge'] : '';
+                        } else {
+                            $value = $label = $option;
+                            $icon = $description = $badge = '';
                         }
+                        $option_id = 'msf_' . esc_attr($name) . '_' . esc_attr(sanitize_title($value));
+                        echo '<label class="msf-option" for="' . $option_id . '">';
+                        echo '<input id="' . $option_id . '" type="radio" name="' . esc_attr($name) . '" value="' . esc_attr($value) . '" required style="display:none;">';
+                        if ($icon) {
+                            echo '<div class="icon"><i class="fa-solid fa-' . esc_attr($icon) . '"></i></div>';
+                        }
+                        echo '<div class="msf-option-text">';
+                        echo '<strong>' . esc_html($label) . '</strong>';
+                        if ($description) {
+                            echo '<div class="msf-option-description">' . esc_html($description) . '</div>';
+                        }
+                        if ($badge) {
+                            echo '<div class="msf-badge">' . esc_html($badge) . '</div>';
+                        }
+                        echo '</div>'; // msf-option-text
+                        echo '</label>';
                     }
+                    echo '</div>'; // msf-options
                 }
                 break;
             // Add more field types as needed
         }
-    }
-
-    private static function render_account_type_cards($options) {
-        echo '<div class="msf-account-cards">';
-        foreach ($options as $option_key => $option_data) {
-            // Handle both old format (string) and new format (array)
-            if (is_array($option_data)) {
-                $option_name = $option_key;
-                $icon = $option_data['icon'] ?? 'fa-circle';
-                $tagline = $option_data['tagline'] ?? '';
-                $amount = $option_data['amount'] ?? '';
-            } else {
-                // Fallback for old format
-                $option_name = $option_data;
-                $icon = 'fa-circle';
-                $tagline = '';
-                $amount = '';
-            }
-
-            // Get color based on account type
-            $colors = array(
-                'Savings Account' => '#1c3f74',
-                'Custody Account' => '#2e5c8a',
-                'Numbered Account' => '#3a6ba5',
-                'Cryptocurrency Account' => '#4a7ac0'
-            );
-            $color = $colors[$option_name] ?? '#1c3f74';
-
-            echo '<label class="msf-account-card">';
-            echo '<input type="radio" name="account_type" value="' . $option_name . '" required>';
-            echo '<div class="msf-card-content">';
-            echo '<div class="msf-card-icon" style="color: ' . $color . '">';
-            echo '<i class="fas ' . $icon . '"></i>';
-            echo '</div>';
-            echo '<div class="msf-card-text">';
-            echo '<h3>' . $option_name . '</h3>';
-            if ($tagline) {
-                echo '<p class="msf-card-tagline">' . $tagline . '</p>';
-            }
-            if ($amount) {
-                echo '<div class="msf-card-amount">' . $amount . '</div>';
-            }
-            echo '</div>';
-            echo '</div>';
-            echo '</label>';
-        }
-        echo '</div>';
-    }
-
-    private static function render_business_type_cards($options) {
-        $business_types = array(
-            'Sole Proprietorship' => array(
-                'icon' => 'fa-user',
-                'description' => 'Single owner business',
-                'color' => '#1c3f74'
-            ),
-            'Partnership' => array(
-                'icon' => 'fa-users',
-                'description' => 'Multiple owners partnership',
-                'color' => '#2e5c8a'
-            ),
-            'Corporation' => array(
-                'icon' => 'fa-building',
-                'description' => 'Legal corporation entity',
-                'color' => '#3a6ba5'
-            ),
-            'LLC' => array(
-                'icon' => 'fa-handshake',
-                'description' => 'Limited Liability Company',
-                'color' => '#4a7ac0'
-            )
-        );
-
-        echo '<div class="msf-account-cards">';
-        foreach ($options as $option) {
-            $type_data = isset($business_types[$option]) ? $business_types[$option] : array(
-                'icon' => 'fa-circle',
-                'description' => '',
-                'color' => '#1c3f74'
-            );
-
-            echo '<label class="msf-account-card">';
-            echo '<input type="radio" name="business_type" value="' . $option . '" required>';
-            echo '<div class="msf-card-content">';
-            echo '<div class="msf-card-icon" style="color: ' . $type_data['color'] . '">';
-            echo '<i class="fas ' . $type_data['icon'] . '"></i>';
-            echo '</div>';
-            echo '<div class="msf-card-text">';
-            echo '<h3>' . $option . '</h3>';
-            if ($type_data['description']) {
-                echo '<p>' . $type_data['description'] . '</p>';
-            }
-            echo '</div>';
-            echo '</div>';
-            echo '</label>';
-        }
-        echo '</div>';
-    }
-
-    private static function process_form_submission($type) {
-        // Basic form submission handling - you can extend this as needed
-        $form_data = get_option("msf_{$type}_form_data", array());
-        
-        if (empty($form_data)) {
-            wp_die('Form configuration not found.');
-        }
-
-        // Collect submitted data
-        $submitted_data = array();
-        foreach ($form_data['steps'] as $step) {
-            if (isset($step['fields'])) {
-                foreach ($step['fields'] as $field) {
-                    $field_name = $field['name'];
-                    if (isset($_POST[$field_name])) {
-                        $submitted_data[$field_name] = sanitize_text_field($_POST[$field_name]);
-                    }
-                }
-            }
-        }
-
-        // Here you can add email sending, database storage, etc.
-        // For now, just show a success message
-        echo '<div class="msf-success-message">';
-        echo '<h3>Form submitted successfully!</h3>';
-        echo '<p>Thank you for your ' . ucfirst($type) . ' account application.</p>';
-        echo '<pre>' . print_r($submitted_data, true) . '</pre>'; // Debug output
-        echo '</div>';
-        
-        // Prevent further form display
-        exit;
     }
 }
