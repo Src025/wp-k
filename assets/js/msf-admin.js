@@ -226,16 +226,53 @@ jQuery(document).ready(function($) {
 
     // ensure hidden textarea is always up-to-date when the form is submitted
     $('#msf-admin-form').on('submit', function(e) {
-        e.preventDefault();
         saveData();
-        this.submit();
     });
 
-    // also update data when icon input manually changes
+    // also update data when any field input manually changes
+    $('#msf-steps').on('input', '.msf-step-title', function() {
+        saveData();
+    });
+
+    $('#msf-steps').on('input', '.msf-field-name', function() {
+        saveData();
+    });
+
     $('#msf-steps').on('input', '.msf-field-icon', function() {
         saveData();
     });
 
+    $('#msf-steps').on('input', '.msf-field-label', function() {
+        saveData();
+    });
+
+    $('#msf-steps').on('change', '.msf-field-validation', function() {
+        saveData();
+    });
+
+    $('#msf-steps').on('input', '.msf-field-condition', function() {
+        saveData();
+    });
+
+    $('#msf-steps').on('input', '.msf-option-value', function() {
+        saveData();
+    });
+
+    $('#msf-steps').on('input', '.msf-option-label', function() {
+        saveData();
+    });
+
+    $('#msf-steps').on('input', '.msf-option-icon', function() {
+        saveData();
+    });
+
+    $('#msf-steps').on('input', '.msf-option-desc', function() {
+        saveData();
+    });
+
+    $('#msf-steps').on('input', '.msf-option-badge', function() {
+        saveData();
+    });
 
     // helper for options editor
     function renderOptionsEditor(options) {
