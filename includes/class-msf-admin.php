@@ -112,13 +112,22 @@ class MSF_Admin {
         $form_data = get_option("msf_{$type}_form_data", $this->get_default_form_data($type));
 
         if (isset($_POST['save_form']) && check_admin_referer('msf_save_form')) {
-            $form_data = json_decode(stripslashes($_POST['form_data']), true);
-            if (json_last_error() !== JSON_ERROR_NONE || !is_array($form_data)) {
+            $new_data = json_decode(stripslashes($_POST['form_data']), true);
+            if (json_last_error() !== JSON_ERROR_NONE || !is_array($new_data)) {
                 echo '<div class="notice notice-error"><p>Unable to save form: invalid JSON detected.</p></div>';
             } else {
-                update_option("msf_{$type}_form_data", $form_data);
-                echo '<div class="notice notice-success"><p>Form saved successfully!</p></div>';
+                update_option("msf_{$type}_form_data", $new_data);
+                // redirect to refresh page and avoid resubmission; will re-fetch updated option
+                $redirect = add_query_arg(array('page' => $_GET['page'], 'updated' => '1'), admin_url('admin.php'));
+                wp_redirect($redirect);
+                exit;
             }
+        }
+
+        if (isset($_GET['updated'])) {
+            echo '<div class="notice notice-success"><p>Form saved successfully!</p></div>';
+            // reload form_data so builder shows latest
+            $form_data = get_option("msf_{$type}_form_data", $this->get_default_form_data($type));
         }
 
         ?>
