@@ -57,6 +57,15 @@ class MSF_Frontend {
                             <p><?php echo esc_html($step['description']); ?></p>
                         <?php endif; ?>
 
+                        <?php if (!empty($step['info'])): ?>
+                            <div class="msf-info-box">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <div class="msf-info-box-content">
+                                    <?php echo wp_kses_post($step['info']); ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
                         <?php if (!empty($step['sections'])): ?>
                             <?php foreach ($step['sections'] as $section): ?>
                                 <?php if (!empty($section['title'])): ?>
@@ -181,7 +190,7 @@ class MSF_Frontend {
                         }
                         $option_id = 'msf_' . esc_attr($name) . '_' . esc_attr(sanitize_title($value));
                         echo '<label class="msf-option" for="' . $option_id . '">';
-                        echo '<input id="' . $option_id . '" type="radio" name="' . esc_attr($name) . '" value="' . esc_attr($value) . '" required style="display:none;">';
+                        echo '<input id="' . $option_id . '" type="radio" name="' . esc_attr($name) . '" value="' . esc_attr($value) . '" required>';
                         if ($icon) {
                             echo '<div class="icon"><i class="fa-solid fa-' . esc_attr($icon) . '"></i></div>';
                         }
