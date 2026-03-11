@@ -198,6 +198,38 @@
 
 .msf-file-upload .msf-file-label i {
     font-size: 32px;
+}
+
+/* new utility/card classes for the personal details step */
+.card {
+    border: 2px solid #e5e8ef;
+    border-radius: 12px;
+    background: white;
+}
+.card-header {
+    padding: 20px;
+    background: rgba(0,0,0,0.03);
+}
+.card-content {
+    padding: 20px;
+}
+
+.bg-background {
+    background: #f3f5fa;
+}
+
+.text-primary {
+    color: #0f2a4d;
+}
+
+.text-muted-foreground {
+    color: #666;
+}
+
+.font-headline {
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
     color: #0f2a4d;
 }
 

@@ -6,6 +6,18 @@
 function get_default_personal_form() {
     return array(
         'steps' => array(
+            // primary personal‐details step moved to the front; will be rendered with the new card UI
+            array(
+                'title' => 'Personal Details',
+                'description' => 'Please provide your official identification details to proceed with the account verification process.',
+                'fields' => array(
+                    array('type' => 'text', 'name' => 'first_name', 'label' => 'First Name', 'placeholder' => 'e.g. Alexander'),
+                    array('type' => 'text', 'name' => 'last_name', 'label' => 'Last Name', 'placeholder' => 'e.g. Hamilton'),
+                    array('type' => 'email', 'name' => 'email', 'label' => 'Email Address', 'placeholder' => 'alex@financial.com'),
+                    array('type' => 'tel', 'name' => 'phone', 'label' => 'Phone Number', 'placeholder' => '+41 (0) 00 000 00 00'),
+                    array('type' => 'text', 'name' => 'address', 'label' => 'Physical Address', 'placeholder' => 'Street, Suite, City, Postal Code'),
+                )
+            ),
             array(
                 'title' => 'Account Type',
                 'description' => 'Please choose the type of account you wish to open.',
@@ -45,25 +57,6 @@ function get_default_personal_form() {
                             ),
                         )
                     )
-                )
-            ),
-            array(
-                'title' => 'Personal Details',
-                'description' => 'Please fill in your personal information accurately.',
-                'fields' => array(
-                    array('type' => 'select', 'name' => 'title', 'label' => 'Title', 'options' => array('Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.')),
-                    array('type' => 'text', 'name' => 'first_name', 'label' => 'First Name'),
-                    array('type' => 'text', 'name' => 'last_name', 'label' => 'Last Name'),
-                    array('type' => 'date', 'name' => 'dob', 'label' => 'Date of Birth'),
-                    array('type' => 'text', 'name' => 'place_of_birth', 'label' => 'Place of Birth'),
-                    array('type' => 'select', 'name' => 'nationality', 'label' => 'Nationality', 'options' => array('United Kingdom', 'United States', 'Canada', 'Australia', 'Other')),
-                    array('type' => 'select', 'name' => 'second_nationality', 'label' => 'Second Nationality', 'options' => array('None', 'United Kingdom', 'United States', 'Canada', 'Australia', 'Other')),
-                    array('type' => 'select', 'name' => 'gender', 'label' => 'Gender', 'options' => array('Select...', 'Male', 'Female', 'Other')),
-                    array('type' => 'select', 'name' => 'marital_status', 'label' => 'Marital Status', 'options' => array('Select...', 'Single', 'Married', 'Divorced', 'Widowed')),
-                    array('type' => 'text', 'name' => 'passport_id', 'label' => 'Passport / ID Number'),
-                    array('type' => 'text', 'name' => 'tin', 'label' => 'Tax Identification Number (TIN)'),
-                    array('type' => 'text', 'name' => 'occupation', 'label' => 'Occupation / Profession'),
-                    array('type' => 'select', 'name' => 'pep', 'label' => 'Are you a Politically Exposed Person (PEP)?', 'options' => array('No', 'Yes')),
                 )
             ),
             array(
