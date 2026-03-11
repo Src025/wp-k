@@ -64,7 +64,8 @@ jQuery(document).ready(function($) {
         $field.append($type);
 
         $field.append('<input type="text" class="msf-field-name" placeholder="Name" value="' + name + '">');
-        $field.append('<input type="text" class="msf-field-icon" placeholder="Icon (e.g. user)" value="' + (field.icon || '') + '">');
+        $field.append('<input type="text" class="msf-field-icon" placeholder="Icon (e.g. user or upload)" value="' + (field.icon || '') + '">');
+        $field.append('<button type="button" class="msf-upload-icon button">Upload</button>');
         $field.append('<input type="text" class="msf-field-label" placeholder="Label" value="' + label + '">');
         $field.append('<select class="msf-field-validation"><option value="">Validation</option>'
             + '<option value="required">Required</option>'
@@ -185,7 +186,34 @@ jQuery(document).ready(function($) {
         saveData();
     });
 
-    $('#msf-admin-form').on('submit', function() {
+    // upload icon button (media picker)
+    $('#msf-steps').on('click', '.msf-upload-icon', function() {
+        var $button = $(this);
+        var $iconInput = $button.prev('.msf-field-icon');
+        var mediaUploader = wp.media({
+            title: 'Select Icon',
+            button: {
+                text: 'Use this icon'
+            },
+            multiple: false
+        });
+        mediaUploader.on('select', function() {
+            var attachment = mediaUploader.state().get('selection').first().toJSON();
+            $iconInput.val(attachment.url);
+            saveData();
+        });
+        mediaUploader.open();
+    });
+
+    // ensure hidden textarea is always up-to-date when the form is submitted
+    $('#msf-admin-form').on('submit', function(e) {
+        e.preventDefault();
+        saveData();
+        this.submit();
+    });
+
+    // also update data when icon input manually changes
+    $('#msf-steps').on('input', '.msf-field-icon', function() {
         saveData();
     });
 

@@ -46,6 +46,7 @@ class MSF_Admin {
         if (strpos($hook, 'multi-step-forms') !== false) {
             wp_enqueue_style('msf-admin-style', MSF_PLUGIN_URL . 'assets/css/msf-admin.css', array(), MSF_VERSION);
             wp_enqueue_script('msf-admin-script', MSF_PLUGIN_URL . 'assets/js/msf-admin.js', array('jquery', 'jquery-ui-sortable'), MSF_VERSION, true);
+            wp_enqueue_media();
 
             // supply initial form data to the script if we're on one of our subpages
             $type = '';
@@ -112,8 +113,12 @@ class MSF_Admin {
 
         if (isset($_POST['save_form']) && check_admin_referer('msf_save_form')) {
             $form_data = json_decode(stripslashes($_POST['form_data']), true);
-            update_option("msf_{$type}_form_data", $form_data);
-            echo '<div class="notice notice-success"><p>Form saved successfully!</p></div>';
+            if (json_last_error() !== JSON_ERROR_NONE || !is_array($form_data)) {
+                echo '<div class="notice notice-error"><p>Unable to save form: invalid JSON detected.</p></div>';
+            } else {
+                update_option("msf_{$type}_form_data", $form_data);
+                echo '<div class="notice notice-success"><p>Form saved successfully!</p></div>';
+            }
         }
 
         ?>
