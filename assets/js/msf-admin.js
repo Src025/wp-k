@@ -23,12 +23,21 @@ jQuery(document).ready(function($) {
         formData = { steps: [] };
     }
 
+    // unique ID counter for form elements
+    var elementIdCounter = 0;
+    function generateElementId(prefix) {
+        return prefix + '_' + (++elementIdCounter);
+    }
+
     function renderBuilder() {
         var $steps = $('#msf-steps').empty();
         formData.steps.forEach(function(step, i) {
             var $step = $('<li class="msf-step-item" data-step-index="' + i + '"></li>');
             $step.append('<span class="msf-drag-handle dashicons dashicons-menu"></span>');
-            $step.append('<input type="text" class="msf-step-title" placeholder="Step Title" value="' + (step.title || '') + '">');
+            
+            var stepTitleId = generateElementId('msf_step_title');
+            $step.append('<input type="text" id="' + stepTitleId + '" class="msf-step-title" placeholder="Step Title" value="' + (step.title || '') + '">');
+            
             $step.append('<button type="button" class="msf-remove-step button-link-delete" title="Remove step">&times;</button>');
             $step.append('<button type="button" class="msf-add-field button">Add Field</button>');
 
@@ -53,7 +62,8 @@ jQuery(document).ready(function($) {
 
         $field.append('<span class="msf-drag-handle dashicons dashicons-menu"></span>');
 
-        var $type = $('<select class="msf-field-type">'
+        var fieldTypeId = generateElementId('msf_field_type');
+        var $type = $('<select class="msf-field-type" id="' + fieldTypeId + '">'
             + '<option value="text">Text</option>'
             + '<option value="date">Date</option>'
             + '<option value="textarea">Textarea</option>'
@@ -63,17 +73,26 @@ jQuery(document).ready(function($) {
         $type.val(type);
         $field.append($type);
 
-        $field.append('<input type="text" class="msf-field-name" placeholder="Name" value="' + name + '">');
-        $field.append('<input type="text" class="msf-field-icon" placeholder="Icon (e.g. user or upload)" value="' + (field.icon || '') + '">');
+        var fieldNameId = generateElementId('msf_field_name');
+        $field.append('<input type="text" id="' + fieldNameId + '" class="msf-field-name" placeholder="Name" value="' + name + '">');
+        
+        var fieldIconId = generateElementId('msf_field_icon');
+        $field.append('<input type="text" id="' + fieldIconId + '" class="msf-field-icon" placeholder="Icon (e.g. user or upload)" value="' + (field.icon || '') + '">');
         $field.append('<button type="button" class="msf-upload-icon button">Upload</button>');
-        $field.append('<input type="text" class="msf-field-label" placeholder="Label" value="' + label + '">');
-        $field.append('<select class="msf-field-validation"><option value="">Validation</option>'
+        
+        var fieldLabelId = generateElementId('msf_field_label');
+        $field.append('<input type="text" id="' + fieldLabelId + '" class="msf-field-label" placeholder="Label" value="' + label + '">');
+        
+        var fieldValidationId = generateElementId('msf_field_validation');
+        $field.append('<select id="' + fieldValidationId + '" class="msf-field-validation"><option value="">Validation</option>'
             + '<option value="required">Required</option>'
             + '<option value="email">Email</option>'
             + '<option value="number">Number</option>'
             + '</select>');
         $field.find('.msf-field-validation').val(validation);
-        $field.append('<input type="text" class="msf-field-condition" placeholder="Condition (e.g. country=US)" value="' + condition + '">');
+        
+        var fieldConditionId = generateElementId('msf_field_condition');
+        $field.append('<input type="text" id="' + fieldConditionId + '" class="msf-field-condition" placeholder="Condition (e.g. country=US)" value="' + condition + '">');
         $field.append('<button type="button" class="msf-remove-field button-link-delete" title="Remove field">&times;</button>');
 
         var $optionsWrapper = $('<div class="msf-field-options-wrapper"></div>');
@@ -234,11 +253,22 @@ jQuery(document).ready(function($) {
     function renderOptionRow(opt) {
         opt = opt || {};
         var $row = $('<div class="msf-option-row"></div>');
-        $row.append('<input class="msf-option-value" placeholder="value" style="width:80px;" value="' + (opt.value||'') + '">');
-        $row.append('<input class="msf-option-label" placeholder="label" style="width:120px;" value="' + (opt.label||'') + '">');
-        $row.append('<input class="msf-option-icon" placeholder="icon" style="width:80px;" value="' + (opt.icon||'') + '">');
-        $row.append('<input class="msf-option-desc" placeholder="description" style="width:140px;" value="' + (opt.description||'') + '">');
-        $row.append('<input class="msf-option-badge" placeholder="badge" style="width:100px;" value="' + (opt.badge||'') + '">');
+        
+        var optValueId = generateElementId('msf_option_value');
+        $row.append('<input id="' + optValueId + '" class="msf-option-value" placeholder="value" style="width:80px;" value="' + (opt.value||'') + '">');
+        
+        var optLabelId = generateElementId('msf_option_label');
+        $row.append('<input id="' + optLabelId + '" class="msf-option-label" placeholder="label" style="width:120px;" value="' + (opt.label||'') + '">');
+        
+        var optIconId = generateElementId('msf_option_icon');
+        $row.append('<input id="' + optIconId + '" class="msf-option-icon" placeholder="icon" style="width:80px;" value="' + (opt.icon||'') + '">');
+        
+        var optDescId = generateElementId('msf_option_desc');
+        $row.append('<input id="' + optDescId + '" class="msf-option-desc" placeholder="description" style="width:140px;" value="' + (opt.description||'') + '">');
+        
+        var optBadgeId = generateElementId('msf_option_badge');
+        $row.append('<input id="' + optBadgeId + '" class="msf-option-badge" placeholder="badge" style="width:100px;" value="' + (opt.badge||'') + '">');
+        
         $row.append('<span class="msf-remove-option">&times;</span>');
         return $row;
     }
