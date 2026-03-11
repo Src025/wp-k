@@ -68,7 +68,7 @@ class MSF_Frontend {
                                 <div class="msf-fields">
                                     <?php foreach ($section['fields'] as $field): ?>
                                         <div class="msf-field">
-                                            <label><?php echo esc_html($field['label']); ?><?php if (!empty($field['required'])): ?> <span class="required">*</span><?php endif; ?></label>
+                                            <label><?php if (!empty($field['icon'])): ?><i class="fa-solid fa-<?php echo esc_attr($field['icon']); ?>"></i>&nbsp;<?php endif; ?><?php echo esc_html($field['label']); ?><?php if (!empty($field['required'])): ?> <span class="required">*</span><?php endif; ?></label>
                                             <?php self::render_field($field); ?>
                                         </div>
                                     <?php endforeach; ?>
@@ -78,7 +78,7 @@ class MSF_Frontend {
                             <div class="msf-fields">
                                 <?php foreach ($step['fields'] as $field): ?>
                                     <div class="msf-field">
-                                        <label><?php echo esc_html($field['label']); ?><?php if (!empty($field['required'])): ?> <span class="required">*</span><?php endif; ?></label>
+                                        <label><?php if (!empty($field['icon'])): ?><i class="fa-solid fa-<?php echo esc_attr($field['icon']); ?>"></i>&nbsp;<?php endif; ?><?php echo esc_html($field['label']); ?><?php if (!empty($field['required'])): ?> <span class="required">*</span><?php endif; ?></label>
                                         <?php self::render_field($field); ?>
                                     </div>
                                 <?php endforeach; ?>

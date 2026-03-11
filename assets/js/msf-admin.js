@@ -58,12 +58,13 @@ jQuery(document).ready(function($) {
             + '<option value="date">Date</option>'
             + '<option value="textarea">Textarea</option>'
             + '<option value="select">Select</option>'
-            + '<option value="radio">Radio</option>'
-            + '</select>');
+            + '<option value="radio">Radio</option>'            + '<option value="file">File</option>'
+            + '<option value="file_upload">File Upload</option>'            + '</select>');
         $type.val(type);
         $field.append($type);
 
         $field.append('<input type="text" class="msf-field-name" placeholder="Name" value="' + name + '">');
+        $field.append('<input type="text" class="msf-field-icon" placeholder="Icon (e.g. user)" value="' + (field.icon || '') + '">');
         $field.append('<input type="text" class="msf-field-label" placeholder="Label" value="' + label + '">');
         $field.append('<select class="msf-field-validation"><option value="">Validation</option>'
             + '<option value="required">Required</option>'
@@ -105,10 +106,14 @@ jQuery(document).ready(function($) {
                 var $field = $(this);
                 var type = $field.find('.msf-field-type').val();
                 var name = $field.find('.msf-field-name').val();
+                var icon = $field.find('.msf-field-icon').val();
                 var label = $field.find('.msf-field-label').val();
                 var validation = $field.find('.msf-field-validation').val();
                 var condition = $field.find('.msf-field-condition').val();
                 var f = { type: type, name: name, label: label };
+                if (icon) {
+                    f.icon = icon;
+                }
                 if (validation) {
                     f.validation = validation;
                 }
@@ -159,7 +164,7 @@ jQuery(document).ready(function($) {
 
     $('#msf-steps').on('click', '.msf-add-field', function() {
         var $step = $(this).closest('.msf-step-item');
-        $step.find('.msf-fields-list').append(renderField({ type: 'text', name: '', label: '' }));
+        $step.find('.msf-fields-list').append(renderField({ type: 'text', name: '', label: '', icon: '' }));
         makeSortable();
         saveData();
     });
