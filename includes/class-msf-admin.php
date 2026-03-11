@@ -109,12 +109,19 @@ class MSF_Admin {
     }
 
     private function forms_page($type) {
-        $form_data = get_option("msf_{$type}_form_data", $this->get_default_form_data($type));
+        // load stored form data; fall back to defaults if nothing valid is found
+        $form_data = get_option("msf_{$type}_form_data");
+        if (!is_array($form_data) || !isset($form_data['steps']) || !is_array($form_data['steps'])) {
+            $form_data = $this->get_default_form_data($type);
+        }
 
         if (isset($_POST['save_form']) && check_admin_referer('msf_save_form')) {
-            $new_data = json_decode(stripslashes($_POST['form_data']), true);
+            // raw POST values are slashed by WordPress, use wp_unslash() to undo
+            $raw = isset($_POST['form_data']) ? wp_unslash($_POST['form_data']) : '';
+            $new_data = json_decode($raw, true);
             if (json_last_error() !== JSON_ERROR_NONE || !is_array($new_data)) {
-                echo '<div class="notice notice-error"><p>Unable to save form: invalid JSON detected.</p></div>';
+                $err = json_last_error_msg();
+                echo '<div class="notice notice-error"><p>Unable to save form: invalid JSON detected (' . esc_html($err) . ').</p></div>';
             } else {
                 update_option("msf_{$type}_form_data", $new_data);
                 // redirect to refresh page and avoid resubmission; will re-fetch updated option
